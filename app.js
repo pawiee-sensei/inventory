@@ -44,6 +44,13 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // =============================
+// VIEW ENGINE (TEMP AUTH UI)
+// =============================
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+
+// =============================
 // STATIC FILES
 // =============================
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
@@ -68,6 +75,15 @@ app.use(
     }
   })
 );
+
+const adminAuthRoutes = require('./routes/admin.auth.routes');
+const staffAuthRoutes = require('./routes/staff.auth.routes');
+const authViewRoutes = require('./routes/auth.views.routes');
+
+app.use('/api/admin/auth', adminAuthRoutes);
+app.use('/api/staff/auth', staffAuthRoutes);
+app.use('/', authViewRoutes);
+
 
 
 // =============================

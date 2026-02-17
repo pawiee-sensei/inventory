@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staff Login</title>
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <h2>Staff Login</h2>
+
+  <form method="POST" action="/api/staff/auth/login">
+    <input name="email" type="email" placeholder="Email" required />
+    <br><br>
+    <input name="password" type="password" placeholder="Password" required />
+    <br><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <p><a href="/admin/login">Admin Login</a></p>
+</body>
+</html>
