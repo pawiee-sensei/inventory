@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <h2>Admin Dashboard</h2>
+
+  <p>Welcome, <%= admin.name %></p>
+
+  <form method="POST" action="/api/admin/auth/logout">
+    <button type="submit">Logout</button>
+  </form>
+</body>
+</html>

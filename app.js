@@ -78,12 +78,18 @@ app.use(
 
 const adminAuthRoutes = require('./routes/admin.auth.routes');
 const staffAuthRoutes = require('./routes/staff.auth.routes');
-const authViewRoutes = require('./routes/auth.views.routes');
 
 app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/staff/auth', staffAuthRoutes);
+
+const authViewRoutes = require('./routes/auth.views.routes');
 app.use('/', authViewRoutes);
 
+const adminProtectedRoutes = require('./routes/admin.protected.routes');
+const staffProtectedRoutes = require('./routes/staff.protected.routes');
+
+app.use('/admin', adminProtectedRoutes);
+app.use('/staff', staffProtectedRoutes);
 
 
 // =============================

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staff Dashboard</title>
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+  <h2>Staff Dashboard</h2>
+
+  <p>Welcome, <%= staff.name %></p>
+
+  <form method="POST" action="/api/staff/auth/logout">
+    <button type="submit">Logout</button>
+  </form>
+</body>
+</html>

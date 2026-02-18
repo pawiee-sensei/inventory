@@ -6,12 +6,12 @@ exports.login = async (req, res) => {
 
   const admin = await Admin.findByEmail(email);
   if (!admin) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return res.status(401).send('Invalid credentials');
   }
 
   const match = await bcrypt.compare(password, admin.password);
   if (!match) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return res.status(401).send('Invalid credentials');
   }
 
   req.session.admin = {
@@ -20,8 +20,16 @@ exports.login = async (req, res) => {
     email: admin.email
   };
 
+  // Detect browser form vs API request
+  const isBrowser = req.headers.accept && req.headers.accept.includes('text/html');
+
+  if (isBrowser) {
+    return res.redirect('/admin/dashboard');
+  }
+
   res.json({ message: 'Admin logged in' });
 };
+
 
 exports.logout = (req, res) => {
   req.session.destroy(() => {
