@@ -1,0 +1,164 @@
+/* Reset */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f5f6f8;
+  color: #333;
+}
+
+/* Layout */
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar (final refined layout) */
+.sidebar {
+  width: 190px;              /* reduced width */
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo */
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 35px;
+  color: #ffffff;
+}
+
+/* Navigation container */
+.sidebar nav {
+  display: flex;
+  flex-direction: column;    /* FORCE vertical stacking */
+  gap: 6px;
+}
+
+/* Nav links */
+.nav-link {
+  display: block;
+  text-decoration: none;
+  color: #cbd5e1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.15s;
+}
+
+.nav-link:hover {
+  background: #1f2937;
+  color: #ffffff;
+}
+
+/* Logout pinned to bottom */
+.logout-form {
+  margin-top: auto;
+}
+
+.logout-form button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #1f2937;
+  color: #e5e7eb;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.logout-form button:hover {
+  background: #374151;
+}
+
+
+/* Main area */
+.main-content {
+  flex: 1;
+  padding: 30px 40px;
+}
+
+/* Page header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.add-btn {
+  background: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Table */
+.table-container {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 13px;
+  color: #6b7280;
+  padding: 12px 10px;
+}
+
+td {
+  padding: 14px 10px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.modal {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.hidden { display:none; }
+
+.modal-content {
+  background:white;
+  padding:20px;
+  width:400px;
+  border-radius:6px;
+}
+
+.modal-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.close-btn {
+  background:red;
+  color:white;
+  border:none;
+  padding:4px 8px;
+  cursor:pointer;
+}
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="admin-container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">SmartInv</h2>
+    <nav>
+      <a href="/admin/dashboard" class="nav-link">Dashboard</a>
+      <a href="/admin/products" class="nav-link">Inventory</a>
+    </nav>
+
+    <form method="POST" action="/api/admin/auth/logout" class="logout-form">
+      <button type="submit">Logout</button>
+    </form>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <%- body %>
+  </main>
+
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
