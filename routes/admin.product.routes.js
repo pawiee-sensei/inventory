@@ -1,11 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/admin.product.controller');
+
 const adminAuth = require('../middleware/adminAuth');
 const upload = require('../middleware/upload');
+const controller = require('../controllers/admin.product.controller');
 
+// GET ALL PRODUCTS
 router.get('/', adminAuth, controller.getAll);
-router.post('/', adminAuth, controller.create);
-router.post('/', adminAuth, upload.single('image'), controller.create);
+
+// CREATE PRODUCT (MULTER MUST RUN BEFORE CONTROLLER)
+router.post(
+  '/',
+  adminAuth,
+  upload.single('image'),   // ← THIS MUST BE HERE
+  controller.create
+);
 
 module.exports = router;

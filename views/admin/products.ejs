@@ -13,7 +13,7 @@
       <button id="closeProductModal" class="close-btn">X</button>
     </div>
 
-    <form action="/api/admin/products" method="POST" enctype="multipart/form-data">
+    <form id="productForm" enctype="multipart/form-data">
       <input name="name" placeholder="Product Name" required><br>
       <textarea name="description" placeholder="Description"></textarea><br>
 
@@ -27,7 +27,8 @@
       <input name="unit" placeholder="Unit"><br>
       <input name="cost_price" type="number" step="0.01" placeholder="Cost Price"><br>
       <input name="selling_price" type="number" step="0.01" placeholder="Selling Price"><br>
-      <input name="min_stock_level" type="number" step="0.01" placeholder="stock"><br>
+      <input name="current_stock" type="number" placeholder="Initial Stock" value="0"><br>
+
 
       <input type="file" name="image"><br><br>
 
