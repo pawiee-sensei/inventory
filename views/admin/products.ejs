@@ -1,13 +1,15 @@
 <%- include('../layouts/adminLayout', {
-  title: 'Product Inventory',
-  body: `
-    <div class="page-header">
-      <h1>Product Inventory</h1>
-      <button id="openProductModal" class="add-btn">+ Add Product</button>
-            <!-- Modal -->
+title: 'Product Inventory',
+body: `
+
+<div class="page-header">
+  <h1>Product Inventory</h1>
+  <button id="openProductModal" class="add-btn">+ Add Product</button>
+</div>
+
+<!-- ================= ADD PRODUCT MODAL ================= -->
 <div id="productModal" class="modal hidden">
   <div class="modal-content">
-
     <div class="modal-header">
       <h2>Add Product</h2>
       <button id="closeProductModal" class="close-btn">X</button>
@@ -17,7 +19,7 @@
       <input name="name" placeholder="Product Name" required><br>
       <textarea name="description" placeholder="Description"></textarea><br>
 
-      <select name="category_id">
+      <select name="category">
         <option value="Meal">Meal</option>
         <option value="Drink">Drink</option>
         <option value="Frozen">Frozen</option>
@@ -29,31 +31,62 @@
       <input name="selling_price" type="number" step="0.01" placeholder="Selling Price"><br>
       <input name="current_stock" type="number" placeholder="Initial Stock" value="0"><br>
 
-
       <input type="file" name="image"><br><br>
 
       <button type="submit">Create Product</button>
     </form>
-
   </div>
 </div>
 
-
+<!-- ================= EDIT PRODUCT MODAL ================= -->
+<div id="editModal" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Product</h2>
+      <button id="closeEditModal" class="close-btn">X</button>
     </div>
 
-    <div class="table-container">
-      <table id="productTable">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Stock</th>
-            <th>Price</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="productBody"></tbody>
-      </table>
-    </div>
-  `
+    <form id="editForm" enctype="multipart/form-data">
+      <input type="hidden" id="edit_id" name="id">
+
+      <input id="edit_name" name="name" placeholder="Product Name" required><br>
+      <textarea id="edit_description" name="description" placeholder="Description"></textarea><br>
+
+      <select id="edit_category" name="category">
+        <option value="Meal">Meal</option>
+        <option value="Drink">Drink</option>
+        <option value="Frozen">Frozen</option>
+        <option value="Supplies">Supplies</option>
+      </select><br>
+
+      <input id="edit_unit" name="unit" placeholder="Unit"><br>
+      <input id="edit_cost" name="cost_price" type="number" step="0.01"><br>
+      <input id="edit_price" name="selling_price" type="number" step="0.01"><br>
+
+      <input type="file" name="image"><br><br>
+
+      <button type="submit">Update Product</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= PRODUCT TABLE ================= -->
+<div class="table-container">
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Category</th>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="productBody"></tbody>
+  </table>
+</div>
+
+`
 }) %>

@@ -44,3 +44,30 @@ exports.findById = async (id) => {
   const [rows] = await db.query('SELECT * FROM products WHERE id = ?', [id]);
   return rows[0];
 };
+
+exports.update = async (id, data) => {
+  const { name, description, category, unit, cost_price, selling_price, min_stock_level, image } = data;
+
+  await db.query(
+    `UPDATE products 
+     SET name=?, description=?, category=?, unit=?, cost_price=?, selling_price=?, min_stock_level=?, image=COALESCE(?, image)
+     WHERE id=?`,
+    [name, description, category, unit, cost_price, selling_price, min_stock_level, image, id]
+  );
+};
+
+exports.delete = async (id) => {
+  // check stock
+  const [rows] = await db.query(
+    `SELECT current_stock FROM products WHERE id=?`,
+    [id]
+  );
+
+  if (!rows.length) throw new Error('Product not found');
+
+  if (rows[0].current_stock > 0) {
+    throw new Error('Cannot delete product with stock remaining');
+  }
+
+  await db.query(`DELETE FROM products WHERE id=?`, [id]);
+};

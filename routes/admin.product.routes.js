@@ -16,4 +16,8 @@ router.post(
   controller.create
 );
 
+router.post('/:id/update', adminAuth, upload.single('image'), controller.update);
+router.post('/:id/delete', adminAuth, controller.delete);
+
+
 module.exports = router;
