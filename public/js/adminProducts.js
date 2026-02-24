@@ -1,26 +1,37 @@
+let ALL_PRODUCTS = [];
+
 // ===============================
-// LOAD PRODUCTS INTO TABLE
+// LOAD PRODUCTS FROM API
 // ===============================
 async function loadProducts() {
   const res = await fetch('/api/admin/products');
-  const products = await res.json();
+  ALL_PRODUCTS = await res.json();
 
+  renderProducts(ALL_PRODUCTS);
+  updateMetrics(ALL_PRODUCTS);
+}
+
+// ===============================
+// RENDER TABLE
+// ===============================
+function renderProducts(products) {
   const tbody = document.getElementById('productBody');
   if (!tbody) return;
 
   tbody.innerHTML = '';
 
   products.forEach(p => {
+    const status = getStatus(p.current_stock, p.min_stock_level);
+    const badge = getStatusBadge(status);
+
     const row = `
       <tr>
-        <td>
-          <img src="/uploads/${p.image}" class="product-img">
-        </td>
+        <td><img src="/uploads/${p.image}" class="product-img"></td>
         <td>${p.name}</td>
         <td>${p.category ?? '-'}</td>
         <td>${p.current_stock}</td>
         <td>₱${p.selling_price}</td>
-        <td>${getStatus(p.current_stock, p.min_stock_level)}</td>
+        <td>${badge}</td>
         <td>
           <button class="edit-btn" data-product='${JSON.stringify(p)}'>Edit</button>
           <button class="delete-btn" data-id="${p.id}">Delete</button>
@@ -33,12 +44,53 @@ async function loadProducts() {
 }
 
 // ===============================
-// STATUS HELPER
+// STATUS LOGIC
 // ===============================
 function getStatus(stock, min) {
   if (stock === 0) return 'OUT';
   if (stock <= min) return 'LOW';
   return 'OK';
+}
+
+function getStatusBadge(status) {
+  if (status === 'OUT') return '<span class="status-badge status-out">OUT</span>';
+  if (status === 'LOW') return '<span class="status-badge status-low">LOW</span>';
+  return '<span class="status-badge status-ok">OK</span>';
+}
+
+// ===============================
+// METRICS CARDS
+// ===============================
+function updateMetrics(products) {
+  let low = 0, out = 0, healthy = 0;
+
+  products.forEach(p => {
+    const s = getStatus(p.current_stock, p.min_stock_level);
+    if (s === 'LOW') low++;
+    else if (s === 'OUT') out++;
+    else healthy++;
+  });
+
+  document.getElementById('m_total').textContent = products.length;
+  document.getElementById('m_low').textContent = low;
+  document.getElementById('m_out').textContent = out;
+  document.getElementById('m_healthy').textContent = healthy;
+}
+
+// ===============================
+// SEARCH + FILTER
+// ===============================
+function filterProducts() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('categoryFilter').value;
+
+  const filtered = ALL_PRODUCTS.filter(p => {
+    const matchName = p.name.toLowerCase().includes(q);
+    const matchCat = !cat || p.category === cat;
+    return matchName && matchCat;
+  });
+
+  renderProducts(filtered);
 }
 
 // ===============================
@@ -47,15 +99,12 @@ function getStatus(stock, min) {
 async function deleteProduct(id) {
   if (!confirm('Delete this product?')) return;
 
-  await fetch(`/api/admin/products/${id}/delete`, {
-    method: 'POST'
-  });
-
+  await fetch(`/api/admin/products/${id}/delete`, { method: 'POST' });
   await loadProducts();
 }
 
 // ===============================
-// MODAL HELPERS (ADD PRODUCT)
+// MODAL HELPERS
 // ===============================
 function openProductModal() {
   document.getElementById('productModal').classList.remove('hidden');
@@ -69,8 +118,7 @@ function closeProductModal() {
 // EDIT PRODUCT MODAL
 // ===============================
 function openEditModal(product) {
-  const modal = document.getElementById('editModal');
-  modal.classList.remove('hidden');
+  document.getElementById('editModal').classList.remove('hidden');
 
   document.getElementById('edit_id').value = product.id;
   document.getElementById('edit_name').value = product.name || '';
@@ -86,24 +134,24 @@ function openEditModal(product) {
 // ===============================
 document.addEventListener('DOMContentLoaded', () => {
 
-  console.log("Admin Products JS Ready");
-
   const addForm = document.getElementById('productForm');
   const editForm = document.getElementById('editForm');
 
   loadProducts();
 
-  // ===============================
-  // OPEN ADD MODAL BUTTON
-  // ===============================
   document.getElementById('openProductModal').addEventListener('click', openProductModal);
+  document.getElementById('closeProductModal').addEventListener('click', closeProductModal);
 
-  // ===============================
-  // SUBMIT ADD PRODUCT
-  // ===============================
+  document.getElementById('closeEditModal').addEventListener('click', () =>
+    document.getElementById('editModal').classList.add('hidden')
+  );
+
+  document.getElementById('searchInput').addEventListener('input', filterProducts);
+  document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+
+  // ADD PRODUCT
   addForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const formData = new FormData(addForm);
 
     const res = await fetch('/api/admin/products', {
@@ -112,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const data = await res.json();
-
     if (data.success) {
       closeProductModal();
       addForm.reset();
@@ -120,9 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ===============================
-  // SUBMIT EDIT PRODUCT
-  // ===============================
+  // EDIT PRODUCT
   editForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -138,43 +183,21 @@ document.addEventListener('DOMContentLoaded', () => {
     await loadProducts();
   });
 
-  // ===============================
-  // TABLE BUTTON EVENTS (CSP SAFE)
-  // ===============================
+  // TABLE BUTTON EVENTS
   document.getElementById('productBody').addEventListener('click', async (e) => {
-
     if (e.target.classList.contains('edit-btn')) {
-      const product = JSON.parse(e.target.dataset.product);
-      openEditModal(product);
+      openEditModal(JSON.parse(e.target.dataset.product));
     }
-
     if (e.target.classList.contains('delete-btn')) {
-      const id = e.target.dataset.id;
-      await deleteProduct(id);
+      await deleteProduct(e.target.dataset.id);
     }
-
   });
 
-  // ===============================
-  // CLOSE MODALS WHEN CLICK OUTSIDE
-  // ===============================
+  // CLOSE MODAL OUTSIDE CLICK
   ['productModal', 'editModal'].forEach(id => {
-    const modal = document.getElementById(id);
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
-      }
+    document.getElementById(id).addEventListener('click', e => {
+      if (e.target.id === id) e.target.classList.add('hidden');
     });
-  });
-
-  // ===============================
-  // CLOSE BUTTONS (X)
-  // ===============================
-  document.getElementById('closeProductModal').addEventListener('click', closeProductModal);
-
-  document.getElementById('closeEditModal').addEventListener('click', () => {
-    document.getElementById('editModal').classList.add('hidden');
   });
 
 });

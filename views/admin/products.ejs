@@ -7,6 +7,44 @@ body: `
   <button id="openProductModal" class="add-btn">+ Add Product</button>
 </div>
 
+<link rel="stylesheet" href="/css/admin-products.css">
+
+<!-- ===== METRIC CARDS ===== -->
+<div class="inventory-metrics">
+  <div class="metric-box">
+    <span>Total Products</span>
+    <strong id="m_total">0</strong>
+  </div>
+
+  <div class="metric-box low">
+    <span>Low Stock</span>
+    <strong id="m_low">0</strong>
+  </div>
+
+  <div class="metric-box out">
+    <span>Out of Stock</span>
+    <strong id="m_out">0</strong>
+  </div>
+
+  <div class="metric-box healthy">
+    <span>Healthy</span>
+    <strong id="m_healthy">0</strong>
+  </div>
+</div>
+
+<!-- ===== SEARCH + FILTER ===== -->
+<div class="inventory-toolbar">
+  <input id="searchInput" placeholder="Search product name...">
+
+  <select id="categoryFilter">
+    <option value="">All Categories</option>
+    <option value="Meal">Meal</option>
+    <option value="Drink">Drink</option>
+    <option value="Frozen">Frozen</option>
+    <option value="Supplies">Supplies</option>
+  </select>
+</div>
+
 <!-- ================= ADD PRODUCT MODAL ================= -->
 <div id="productModal" class="modal hidden">
   <div class="modal-content">

@@ -2,33 +2,38 @@
 title: 'Admin Dashboard',
 body: `
 
-<h1 class="page-title">Inventory Dashboard</h1>
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Inventory Overview</h1>
+    <p class="page-subtitle">Real-time snapshot of your stock health</p>
+  </div>
+</div>
 
 <div class="metrics-grid">
 
-  <div class="metric-card">
-    <h3>Total Products</h3>
-    <p id="m_total">0</p>
+  <div class="metric">
+    <span class="metric-label">TOTAL PRODUCTS</span>
+    <span id="m_total" class="metric-value">0</span>
   </div>
 
-  <div class="metric-card low">
-    <h3>Low Stock</h3>
-    <p id="m_low">0</p>
+  <div class="metric">
+    <span class="metric-label">LOW STOCK</span>
+    <span id="m_low" class="metric-value warning">0</span>
   </div>
 
-  <div class="metric-card out">
-    <h3>Out of Stock</h3>
-    <p id="m_out">0</p>
+  <div class="metric">
+    <span class="metric-label">OUT OF STOCK</span>
+    <span id="m_out" class="metric-value danger">0</span>
   </div>
 
-  <div class="metric-card healthy">
-    <h3>Healthy Stock</h3>
-    <p id="m_healthy">0</p>
+  <div class="metric">
+    <span class="metric-label">HEALTHY ITEMS</span>
+    <span id="m_healthy" class="metric-value success">0</span>
   </div>
 
-  <div class="metric-card value">
-    <h3>Inventory Value</h3>
-    <p id="m_value">₱0</p>
+  <div class="metric">
+    <span class="metric-label">INVENTORY VALUE</span>
+    <span id="m_value" class="metric-value primary">₱0</span>
   </div>
 
 </div>

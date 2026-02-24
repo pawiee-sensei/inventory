@@ -77,6 +77,7 @@ body {
 .main-content {
   flex: 1;
   padding: 30px 40px;
+  background: #f9fafb;
 }
 
 /* Page header */
@@ -236,35 +237,58 @@ td {
   vertical-align:middle;
 }
 
+/* ================= DASHBOARD TYPOGRAPHY ================= */
+
 .page-title {
-  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
 }
+
+.page-subtitle {
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* ================= METRICS GRID ================= */
 
 .metrics-grid {
+  margin-top: 28px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
 }
 
-.metric-card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+/* ================= METRIC CARD ================= */
+
+.metric {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 22px 24px;
 }
 
-.metric-card h3 {
-  margin: 0;
+.metric-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: .06em;
   color: #6b7280;
+  font-weight: 600;
 }
 
-.metric-card p {
-  font-size: 28px;
-  font-weight: bold;
-  margin-top: 10px;
+.metric-value {
+  display: block;
+  margin-top: 8px;
+  font-size: 30px;
+  font-weight: 600;
+  color: #111827;
 }
 
-.metric-card.low { border-left: 6px solid #f59e0b; }
-.metric-card.out { border-left: 6px solid #ef4444; }
-.metric-card.healthy { border-left: 6px solid #10b981; }
-.metric-card.value { border-left: 6px solid #2563eb; }
+/* Accent colors (subtle, professional) */
+
+.metric-value.primary { color: #1d4ed8; }
+.metric-value.success { color: #059669; }
+.metric-value.warning { color: #d97706; }
+.metric-value.danger  { color: #dc2626; }
