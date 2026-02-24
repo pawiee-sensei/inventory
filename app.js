@@ -93,5 +93,8 @@ app.get('/', (req, res) => {
   res.send('Smart Inventory API is running');
 });
 
+const adminDashboardRoutes = require('./routes/admin.dashboard.routes');
+app.use('/api/admin/dashboard', adminDashboardRoutes);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));

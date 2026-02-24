@@ -1,4 +1,39 @@
 <%- include('../layouts/adminLayout', {
-  title: 'Admin Dashboard',
-  body: `<h1>Dashboard</h1><p>Welcome, ${admin.name}</p>`
+title: 'Admin Dashboard',
+body: `
+
+<h1 class="page-title">Inventory Dashboard</h1>
+
+<div class="metrics-grid">
+
+  <div class="metric-card">
+    <h3>Total Products</h3>
+    <p id="m_total">0</p>
+  </div>
+
+  <div class="metric-card low">
+    <h3>Low Stock</h3>
+    <p id="m_low">0</p>
+  </div>
+
+  <div class="metric-card out">
+    <h3>Out of Stock</h3>
+    <p id="m_out">0</p>
+  </div>
+
+  <div class="metric-card healthy">
+    <h3>Healthy Stock</h3>
+    <p id="m_healthy">0</p>
+  </div>
+
+  <div class="metric-card value">
+    <h3>Inventory Value</h3>
+    <p id="m_value">₱0</p>
+  </div>
+
+</div>
+
+<script src="/js/adminDashboard.js"></script>
+
+`
 }) %>

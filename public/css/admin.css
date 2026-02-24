@@ -236,3 +236,35 @@ td {
   vertical-align:middle;
 }
 
+.page-title {
+  margin-bottom: 25px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.metric-card h3 {
+  margin: 0;
+  color: #6b7280;
+}
+
+.metric-card p {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.metric-card.low { border-left: 6px solid #f59e0b; }
+.metric-card.out { border-left: 6px solid #ef4444; }
+.metric-card.healthy { border-left: 6px solid #10b981; }
+.metric-card.value { border-left: 6px solid #2563eb; }
