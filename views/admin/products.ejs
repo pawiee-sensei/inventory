@@ -12,28 +12,61 @@ body: `
   <div class="modal-content">
     <div class="modal-header">
       <h2>Add Product</h2>
-      <button id="closeProductModal" class="close-btn">X</button>
+      <button type="button" id="closeProductModal" class="close-btn">&times;</button>
     </div>
 
-    <form id="productForm" enctype="multipart/form-data">
-      <input name="name" placeholder="Product Name" required><br>
-      <textarea name="description" placeholder="Description"></textarea><br>
+    <form id="productForm" enctype="multipart/form-data" class="modal-form">
 
-      <select name="category">
-        <option value="Meal">Meal</option>
-        <option value="Drink">Drink</option>
-        <option value="Frozen">Frozen</option>
-        <option value="Supplies">Supplies</option>
-      </select><br>
+      <div class="form-group">
+        <label>Product Name</label>
+        <input name="name" required>
+      </div>
 
-      <input name="unit" placeholder="Unit"><br>
-      <input name="cost_price" type="number" step="0.01" placeholder="Cost Price"><br>
-      <input name="selling_price" type="number" step="0.01" placeholder="Selling Price"><br>
-      <input name="current_stock" type="number" placeholder="Initial Stock" value="0"><br>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="description"></textarea>
+      </div>
 
-      <input type="file" name="image"><br><br>
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category">
+          <option value="Meal">Meal</option>
+          <option value="Drink">Drink</option>
+          <option value="Frozen">Frozen</option>
+          <option value="Supplies">Supplies</option>
+        </select>
+      </div>
 
-      <button type="submit">Create Product</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cost Price</label>
+          <input name="cost_price" type="number" step="0.01">
+        </div>
+
+        <div class="form-group">
+          <label>Selling Price</label>
+          <input name="selling_price" type="number" step="0.01">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Initial Stock</label>
+          <input name="current_stock" type="number" value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Unit</label>
+          <input name="unit">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" name="image">
+      </div>
+
+      <button type="submit" class="primary-btn">Create Product</button>
     </form>
   </div>
 </div>
@@ -43,29 +76,50 @@ body: `
   <div class="modal-content">
     <div class="modal-header">
       <h2>Edit Product</h2>
-      <button id="closeEditModal" class="close-btn">X</button>
+      <button type="button" id="closeEditModal" class="close-btn">&times;</button>
     </div>
 
-    <form id="editForm" enctype="multipart/form-data">
+    <form id="editForm" enctype="multipart/form-data" class="modal-form">
       <input type="hidden" id="edit_id" name="id">
 
-      <input id="edit_name" name="name" placeholder="Product Name" required><br>
-      <textarea id="edit_description" name="description" placeholder="Description"></textarea><br>
+      <div class="form-group">
+        <label>Product Name</label>
+        <input id="edit_name" name="name" required>
+      </div>
 
-      <select id="edit_category" name="category">
-        <option value="Meal">Meal</option>
-        <option value="Drink">Drink</option>
-        <option value="Frozen">Frozen</option>
-        <option value="Supplies">Supplies</option>
-      </select><br>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="edit_description" name="description"></textarea>
+      </div>
 
-      <input id="edit_unit" name="unit" placeholder="Unit"><br>
-      <input id="edit_cost" name="cost_price" type="number" step="0.01"><br>
-      <input id="edit_price" name="selling_price" type="number" step="0.01"><br>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="edit_category" name="category">
+          <option value="Meal">Meal</option>
+          <option value="Drink">Drink</option>
+          <option value="Frozen">Frozen</option>
+          <option value="Supplies">Supplies</option>
+        </select>
+      </div>
 
-      <input type="file" name="image"><br><br>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cost Price</label>
+          <input id="edit_cost" name="cost_price" type="number" step="0.01">
+        </div>
 
-      <button type="submit">Update Product</button>
+        <div class="form-group">
+          <label>Selling Price</label>
+          <input id="edit_price" name="selling_price" type="number" step="0.01">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Replace Image</label>
+        <input type="file" name="image">
+      </div>
+
+      <button type="submit" class="primary-btn">Update Product</button>
     </form>
   </div>
 </div>

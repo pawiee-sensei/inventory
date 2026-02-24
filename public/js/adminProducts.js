@@ -13,27 +13,24 @@ async function loadProducts() {
   products.forEach(p => {
     const row = `
       <tr>
-       <td>
-  <img src="/uploads/${p.image}" class="product-img">
-</td>
-<td>${p.name}</td>
-<td>${p.category ?? '-'}</td>
-<td>${p.current_stock}</td>
-<td>₱${p.selling_price}</td>
-<td>${getStatus(p.current_stock, p.min_stock_level)}</td>
-<td>
-  <button class="edit-btn" data-product='${JSON.stringify(p)}'>Edit</button>
-<button class="delete-btn" data-id="${p.id}">Delete</button>
-
-</td>
-
+        <td>
+          <img src="/uploads/${p.image}" class="product-img">
+        </td>
+        <td>${p.name}</td>
+        <td>${p.category ?? '-'}</td>
+        <td>${p.current_stock}</td>
+        <td>₱${p.selling_price}</td>
+        <td>${getStatus(p.current_stock, p.min_stock_level)}</td>
+        <td>
+          <button class="edit-btn" data-product='${JSON.stringify(p)}'>Edit</button>
+          <button class="delete-btn" data-id="${p.id}">Delete</button>
+        </td>
       </tr>
     `;
 
     tbody.insertAdjacentHTML('beforeend', row);
   });
 }
-
 
 // ===============================
 // STATUS HELPER
@@ -43,7 +40,6 @@ function getStatus(stock, min) {
   if (stock <= min) return 'LOW';
   return 'OK';
 }
-
 
 // ===============================
 // DELETE PRODUCT
@@ -58,7 +54,6 @@ async function deleteProduct(id) {
   await loadProducts();
 }
 
-
 // ===============================
 // MODAL HELPERS (ADD PRODUCT)
 // ===============================
@@ -69,7 +64,6 @@ function openProductModal() {
 function closeProductModal() {
   document.getElementById('productModal').classList.add('hidden');
 }
-
 
 // ===============================
 // EDIT PRODUCT MODAL
@@ -85,30 +79,7 @@ function openEditModal(product) {
   document.getElementById('edit_unit').value = product.unit || '';
   document.getElementById('edit_cost').value = product.cost_price || '';
   document.getElementById('edit_price').value = product.selling_price || '';
-  document.getElementById('edit_min_stock').value = product.min_stock_level || '';
 }
-
-
-document.getElementById('closeEditModal').onclick = () => {
-  document.getElementById('editModal').classList.add('hidden');
-};
-
-document.getElementById('editForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const id = document.getElementById('edit_id').value;
-  const formData = new FormData(document.getElementById('editForm'));
-
-  await fetch(`/api/admin/products/${id}/update`, {
-    method: 'POST',
-    body: formData
-  });
-
-  document.getElementById('editModal').classList.add('hidden');
-  await loadProducts();
-});
-
-
 
 // ===============================
 // PAGE INIT
@@ -117,18 +88,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log("Admin Products JS Ready");
 
-  const form = document.getElementById('productForm');
+  const addForm = document.getElementById('productForm');
+  const editForm = document.getElementById('editForm');
 
-  // Load products when page opens
   loadProducts();
 
-  if (!form) return;
+  // ===============================
+  // OPEN ADD MODAL BUTTON
+  // ===============================
+  document.getElementById('openProductModal').addEventListener('click', openProductModal);
 
-  // Submit product form via AJAX
-  form.addEventListener('submit', async (e) => {
+  // ===============================
+  // SUBMIT ADD PRODUCT
+  // ===============================
+  addForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
+    const formData = new FormData(addForm);
 
     const res = await fetch('/api/admin/products', {
       method: 'POST',
@@ -139,27 +115,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (data.success) {
       closeProductModal();
-      form.reset();
+      addForm.reset();
       await loadProducts();
     }
   });
-// ===============================
-// TABLE BUTTON EVENTS (CSP SAFE)
-// ===============================
-document.getElementById('productBody').addEventListener('click', async (e) => {
 
-  // EDIT BUTTON
-  if (e.target.classList.contains('edit-btn')) {
-    const product = JSON.parse(e.target.dataset.product);
-    openEditModal(product);
-  }
+  // ===============================
+  // SUBMIT EDIT PRODUCT
+  // ===============================
+  editForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  // DELETE BUTTON
-  if (e.target.classList.contains('delete-btn')) {
-    const id = e.target.dataset.id;
-    await deleteProduct(id);
-  }
+    const id = document.getElementById('edit_id').value;
+    const formData = new FormData(editForm);
 
-});
+    await fetch(`/api/admin/products/${id}/update`, {
+      method: 'POST',
+      body: formData
+    });
+
+    document.getElementById('editModal').classList.add('hidden');
+    await loadProducts();
+  });
+
+  // ===============================
+  // TABLE BUTTON EVENTS (CSP SAFE)
+  // ===============================
+  document.getElementById('productBody').addEventListener('click', async (e) => {
+
+    if (e.target.classList.contains('edit-btn')) {
+      const product = JSON.parse(e.target.dataset.product);
+      openEditModal(product);
+    }
+
+    if (e.target.classList.contains('delete-btn')) {
+      const id = e.target.dataset.id;
+      await deleteProduct(id);
+    }
+
+  });
+
+  // ===============================
+  // CLOSE MODALS WHEN CLICK OUTSIDE
+  // ===============================
+  ['productModal', 'editModal'].forEach(id => {
+    const modal = document.getElementById(id);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  });
+
+  // ===============================
+  // CLOSE BUTTONS (X)
+  // ===============================
+  document.getElementById('closeProductModal').addEventListener('click', closeProductModal);
+
+  document.getElementById('closeEditModal').addEventListener('click', () => {
+    document.getElementById('editModal').classList.add('hidden');
+  });
 
 });
