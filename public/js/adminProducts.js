@@ -18,6 +18,12 @@ function renderProducts(products) {
   const tbody = document.getElementById('productBody');
   if (!tbody) return;
 
+  // 🔢 Update toolbar counter
+  const countEl = document.getElementById('tableCount');
+  if (countEl) {
+    countEl.textContent = products.length;
+  }
+
   tbody.innerHTML = '';
 
   products.forEach(p => {
@@ -29,8 +35,8 @@ function renderProducts(products) {
         <td><img src="/uploads/${p.image}" class="product-img"></td>
         <td>${p.name}</td>
         <td>${p.category ?? '-'}</td>
-        <td>${p.current_stock}</td>
-        <td>₱${p.selling_price}</td>
+        <td class="num">${p.current_stock}</td>
+        <td class="num">₱${Number(p.selling_price).toLocaleString()}</td>
         <td>${badge}</td>
         <td>
           <button class="edit-btn" data-product='${JSON.stringify(p)}'>Edit</button>

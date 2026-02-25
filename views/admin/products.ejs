@@ -10,39 +10,53 @@ body: `
 <link rel="stylesheet" href="/css/admin-products.css">
 
 <!-- ===== METRIC CARDS ===== -->
-<div class="inventory-metrics">
-  <div class="metric-box">
-    <span>Total Products</span>
-    <strong id="m_total">0</strong>
+<div class="metrics-grid">
+
+  <div class="metric">
+    <span class="metric-label">TOTAL PRODUCTS</span>
+    <span id="m_total" class="metric-value primary">0</span>
   </div>
 
-  <div class="metric-box low">
-    <span>Low Stock</span>
-    <strong id="m_low">0</strong>
+  <div class="metric">
+    <span class="metric-label">LOW STOCK</span>
+    <span id="m_low" class="metric-value warning">0</span>
   </div>
 
-  <div class="metric-box out">
-    <span>Out of Stock</span>
-    <strong id="m_out">0</strong>
+  <div class="metric">
+    <span class="metric-label">OUT OF STOCK</span>
+    <span id="m_out" class="metric-value danger">0</span>
   </div>
 
-  <div class="metric-box healthy">
-    <span>Healthy</span>
-    <strong id="m_healthy">0</strong>
+  <div class="metric">
+    <span class="metric-label">HEALTHY STOCK</span>
+    <span id="m_healthy" class="metric-value success">0</span>
   </div>
+
 </div>
 
 <!-- ===== SEARCH + FILTER ===== -->
 <div class="inventory-toolbar">
-  <input id="searchInput" placeholder="Search product name...">
 
-  <select id="categoryFilter">
-    <option value="">All Categories</option>
-    <option value="Meal">Meal</option>
-    <option value="Drink">Drink</option>
-    <option value="Frozen">Frozen</option>
-    <option value="Supplies">Supplies</option>
-  </select>
+  <div class="search-box">
+    <span class="search-icon">🔎</span>
+    <input id="searchInput" placeholder="Search product name...">
+  </div>
+
+  <div class="filter-box">
+    <label>Category:</label>
+    <select id="categoryFilter">
+      <option value="">All</option>
+      <option value="Meal">Meal</option>
+      <option value="Drink">Drink</option>
+      <option value="Frozen">Frozen</option>
+      <option value="Supplies">Supplies</option>
+    </select>
+  </div>
+
+  <div class="table-count">
+    Showing <strong id="tableCount">0</strong> products
+  </div>
+
 </div>
 
 <!-- ================= ADD PRODUCT MODAL ================= -->
@@ -163,22 +177,23 @@ body: `
 </div>
 
 <!-- ================= PRODUCT TABLE ================= -->
-<div class="table-container">
-  <table id="productTable">
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Product</th>
-        <th>Category</th>
-        <th>Stock</th>
-        <th>Price</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="productBody"></tbody>
-  </table>
+<div class="table-wrapper">
+  <div class="table-container">
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Stock</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productBody"></tbody>
+    </table>
+  </div>
 </div>
-
 `
 }) %>
