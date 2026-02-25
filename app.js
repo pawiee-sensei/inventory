@@ -8,7 +8,7 @@ const helmet = require('helmet');
 const app = express();
 
 // =============================
-// HELMET (KEEP AS IS)
+// HELMET
 // =============================
 app.use(
   helmet({
@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // =============================
-// STATIC FILES (IMPORTANT)
+// STATIC FILES
 // =============================
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
@@ -66,21 +66,21 @@ app.use(
 );
 
 //
-// ===== ROUTES (ORDER MATTERS) =====
+// ===== ROUTES =====
 //
 
 // Auth API
 app.use('/api/admin/auth', require('./routes/admin.auth.routes'));
 app.use('/api/staff/auth', require('./routes/staff.auth.routes'));
 
-// Auth Pages (login screens)
+// Auth Pages
 app.use('/', require('./routes/auth.views.routes'));
 
-// Admin & Staff protected pages
+// Protected Pages
 app.use('/admin', require('./routes/admin.protected.routes'));
 app.use('/staff', require('./routes/staff.protected.routes'));
 
-// Admin & Staff UI pages
+// UI Pages
 app.use('/admin', require('./routes/admin.views.routes'));
 app.use('/staff', require('./routes/staff.views.routes'));
 
@@ -88,13 +88,14 @@ app.use('/staff', require('./routes/staff.views.routes'));
 app.use('/api/admin/products', require('./routes/admin.product.routes'));
 app.use('/api/staff/stock', require('./routes/staff.stock.routes'));
 
-// Test route
+// ✅ ADD THESE ROUTES HERE (correct place)
+app.use('/api/admin/dashboard', require('./routes/admin.dashboard.routes'));
+app.use('/api/admin/stock', require('./routes/admin.stock.routes'));
+
+// Test route LAST
 app.get('/', (req, res) => {
   res.send('Smart Inventory API is running');
 });
-
-const adminDashboardRoutes = require('./routes/admin.dashboard.routes');
-app.use('/api/admin/dashboard', adminDashboardRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));

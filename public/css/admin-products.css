@@ -163,3 +163,22 @@
 #productTable td:nth-child(7) {
   text-align: center;
 }
+
+/* ===== HISTORY SECTION ===== */
+.history-section {
+  margin-top:40px;
+}
+
+.history-header {
+  margin:20px 0 10px;
+}
+
+#historyTable {
+  width:100%;
+  border-collapse:collapse;
+}
+
+#historyTable th, #historyTable td {
+  padding:12px;
+  border-bottom:1px solid #eee;
+}

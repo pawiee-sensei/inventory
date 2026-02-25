@@ -107,6 +107,7 @@ async function deleteProduct(id) {
 
   await fetch(`/api/admin/products/${id}/delete`, { method: 'POST' });
   await loadProducts();
+
 }
 
 // ===============================
@@ -144,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editForm = document.getElementById('editForm');
 
   loadProducts();
+  loadStockHistory();
 
   document.getElementById('openProductModal').addEventListener('click', openProductModal);
   document.getElementById('closeProductModal').addEventListener('click', closeProductModal);
@@ -207,3 +209,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+// ===============================
+// LOAD STOCK MOVEMENT HISTORY
+// ===============================
+async function loadStockHistory() {
+  const res = await fetch('/api/admin/stock/history');
+  const rows = await res.json();
+
+  const tbody = document.getElementById('historyBody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  rows.slice(0, 10).forEach(r => {
+    const tr = `
+      <tr>
+        <td>${new Date(r.created_at).toLocaleString()}</td>
+        <td>${r.product_name}</td>
+        <td>${historyBadge(r.type)}</td>
+        <td class="num">${r.quantity}</td>
+        <td>${r.staff_name ?? '-'}</td>
+        <td>${r.note ?? ''}</td>
+      </tr>
+    `;
+    tbody.insertAdjacentHTML('beforeend', tr);
+  });
+}
+
+function historyBadge(type) {
+  if (type === 'IN') return '<span class="status-badge status-ok">IN</span>';
+  if (type === 'OUT') return '<span class="status-badge status-out">OUT</span>';
+  return '<span class="status-badge status-low">ADJUST</span>';
+}
