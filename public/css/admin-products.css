@@ -173,12 +173,49 @@
   margin:20px 0 10px;
 }
 
+/* ===== HISTORY TABLE FIXED ALIGNMENT ===== */
+
 #historyTable {
   width:100%;
   border-collapse:collapse;
+  table-layout:fixed;
 }
 
-#historyTable th, #historyTable td {
-  padding:12px;
-  border-bottom:1px solid #eee;
+#historyTable th {
+  text-align:left;
+  padding:14px;
+  font-size:13px;
+  color:#6b7280;
+}
+
+#historyTable td {
+  padding:14px;
+  border-top:1px solid #eee;
+  vertical-align:middle;
+}
+
+/* Center specific columns */
+#historyTable th:nth-child(1),
+#historyTable td:nth-child(1) {
+  text-align:center; /* Type */
+}
+
+#historyTable th:nth-child(2),
+#historyTable td:nth-child(2) {
+  text-align:left; /* Product */
+}
+
+#historyTable th:nth-child(3),
+#historyTable td:nth-child(3) {
+  text-align:center; /* Qty */
+}
+
+#historyTable th:nth-child(4),
+#historyTable td:nth-child(4) {
+  text-align:left; /* Staff */
+}
+
+#historyTable th:nth-child(5),
+#historyTable td:nth-child(5) {
+  text-align:left; /* Note */
 }

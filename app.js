@@ -92,6 +92,9 @@ app.use('/api/staff/stock', require('./routes/staff.stock.routes'));
 app.use('/api/admin/dashboard', require('./routes/admin.dashboard.routes'));
 app.use('/api/admin/stock', require('./routes/admin.stock.routes'));
 
+const adminPurchaseRoutes = require('./routes/admin.purchase.routes');
+app.use('/api/admin/purchase', adminPurchaseRoutes);
+
 // Test route LAST
 app.get('/', (req, res) => {
   res.send('Smart Inventory API is running');
