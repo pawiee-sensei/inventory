@@ -1,0 +1,59 @@
+<%- include('../layouts/adminLayout', {
+title: 'Purchase Orders',
+body: `
+
+<link rel="stylesheet" href="/css/admin-purchase.css">
+
+<div class="page-header">
+  <h1>Purchase Orders</h1>
+  <div>
+    <button id="openSupplierModal" class="secondary-btn">+ Supplier</button>
+    <button id="openPOModal" class="primary-btn">+ Create PO</button>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table id="poTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Supplier</th>
+        <th>Status</th>
+        <th>Total Cost</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="poBody"></tbody>
+  </table>
+</div>
+
+<!-- ================= SUPPLIER MODAL ================= -->
+<div id="supplierModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Create Supplier</h2>
+    <form id="supplierForm">
+      <input name="name" placeholder="Supplier Name" required><br>
+      <input name="contact_person" placeholder="Contact Person"><br>
+      <input name="phone" placeholder="Phone"><br>
+      <input name="email" placeholder="Email"><br>
+      <textarea name="address" placeholder="Address"></textarea><br>
+      <button type="submit" class="primary-btn">Save</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= PO MODAL ================= -->
+<div id="poModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Create Purchase Order</h2>
+    <form id="poForm">
+      <select name="supplier_id" id="supplierSelect"></select>
+      <button type="submit" class="primary-btn">Create PO</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/adminPurchase.js"></script>
+
+`
+}) %>

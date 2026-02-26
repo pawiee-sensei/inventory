@@ -6,4 +6,8 @@ router.get('/products', adminAuth, (req, res) => {
   res.render('admin/products');
 });
 
+router.get('/purchase', adminAuth, (req, res) => {
+  res.render('admin/purchase');
+});
+
 module.exports = router;

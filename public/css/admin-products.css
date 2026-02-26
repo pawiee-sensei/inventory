@@ -219,3 +219,33 @@
 #historyTable td:nth-child(5) {
   text-align:left; /* Note */
 }
+
+.page-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.primary-btn {
+  background:#2563eb;
+  color:white;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+}
+
+.secondary-btn {
+  background:#6b7280;
+  color:white;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+  margin-right:10px;
+}
+
+.table-wrapper {
+  background:white;
+  padding:20px;
+  border-radius:10px;
+}
