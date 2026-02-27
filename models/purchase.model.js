@@ -39,5 +39,29 @@ exports.getAllPO = async () => {
     ORDER BY po.created_at DESC
   `);
 
+
+  
+  return rows;
+};
+
+exports.getPOItems = async (po_id) => {
+  const [rows] = await db.query(`
+    SELECT 
+      poi.product_id,
+      poi.quantity,
+      poi.cost_price,
+      p.name AS product_name
+    FROM purchase_order_items poi
+    JOIN products p ON poi.product_id = p.id
+    WHERE poi.purchase_order_id = ?
+  `, [po_id]);
+
+  return rows;
+};
+
+exports.getProducts = async () => {
+  const [rows] = await db.query(
+    'SELECT id,name FROM products ORDER BY name'
+  );
   return rows;
 };

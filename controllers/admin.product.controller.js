@@ -49,18 +49,12 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const id = req.params.id;
-    const data = req.body;
+    await Product.update(req.params.id, req.body, req.file);
 
-    if (req.file) {
-      data.image = req.file.filename;
-    }
-
-    await Product.update(id, data);
-
-    res.redirect('/admin/products');
+    res.json({ success: true });
   } catch (err) {
-    res.status(400).send(err.message);
+    console.error(err);
+    res.status(500).json({ success: false });
   }
 };
 

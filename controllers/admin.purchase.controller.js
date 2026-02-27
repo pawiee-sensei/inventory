@@ -27,3 +27,13 @@ exports.getAllPO = async (req, res) => {
   const data = await Purchase.getAllPO();
   res.json(data);
 };
+
+exports.getProducts = async (req,res)=>{
+  const rows = await Purchase.getProducts();
+  res.json(rows);
+};
+
+exports.getPOItems = async (req,res)=>{
+  const rows = await Purchase.getPOItems(req.params.id);
+  res.json(rows);
+};

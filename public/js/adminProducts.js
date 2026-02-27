@@ -127,13 +127,16 @@ function closeProductModal() {
 function openEditModal(product) {
   document.getElementById('editModal').classList.remove('hidden');
 
-  document.getElementById('edit_id').value = product.id;
-  document.getElementById('edit_name').value = product.name || '';
-  document.getElementById('edit_description').value = product.description || '';
-  document.getElementById('edit_category').value = product.category || '';
-  document.getElementById('edit_unit').value = product.unit || '';
-  document.getElementById('edit_cost').value = product.cost_price || '';
-  document.getElementById('edit_price').value = product.selling_price || '';
+document.getElementById('edit_id').value = product.id ?? '';
+document.getElementById('edit_name').value = product.name ?? '';
+document.getElementById('edit_description').value = product.description ?? '';
+document.getElementById('edit_category').value = product.category ?? '';
+
+document.getElementById('edit_cost').value =
+  product.cost_price !== null ? product.cost_price : '';
+
+document.getElementById('edit_price').value =
+  product.selling_price !== null ? product.selling_price : '';
 }
 
 // ===============================
@@ -175,21 +178,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // EDIT PRODUCT
-  editForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+ // ===============================
+// SUBMIT EDIT PRODUCT (FIXED UX)
+// ===============================
+editForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    const id = document.getElementById('edit_id').value;
-    const formData = new FormData(editForm);
+  const id = document.getElementById('edit_id').value;
+  const formData = new FormData(editForm);
 
-    await fetch(`/api/admin/products/${id}/update`, {
-      method: 'POST',
-      body: formData
-    });
-
-    document.getElementById('editModal').classList.add('hidden');
-    await loadProducts();
+  const res = await fetch(`/api/admin/products/${id}/update`, {
+    method: 'POST',
+    body: formData
   });
+
+  const data = await res.json();
+
+  if (data.success) {
+    // close modal
+    document.getElementById('editModal').classList.add('hidden');
+
+    // reset form
+    editForm.reset();
+
+    // reload table instantly
+    await loadProducts();
+  } else {
+    alert('Update failed');
+  }
+});
 
   // TABLE BUTTON EVENTS
   document.getElementById('productBody').addEventListener('click', async (e) => {

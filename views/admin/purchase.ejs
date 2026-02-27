@@ -18,9 +18,11 @@ body: `
       <tr>
         <th>ID</th>
         <th>Supplier</th>
+        <th>Items</th>
         <th>Status</th>
         <th>Total Cost</th>
         <th>Date</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody id="poBody"></tbody>
@@ -42,7 +44,7 @@ body: `
   </div>
 </div>
 
-<!-- ================= PO MODAL ================= -->
+<!-- ================= CREATE PO MODAL ================= -->
 <div id="poModal" class="modal hidden">
   <div class="modal-content">
     <h2>Create Purchase Order</h2>
@@ -50,6 +52,35 @@ body: `
       <select name="supplier_id" id="supplierSelect"></select>
       <button type="submit" class="primary-btn">Create PO</button>
     </form>
+  </div>
+</div>
+
+<!-- ================= ADD ITEMS MODAL ================= -->
+<div id="itemsModal" class="modal hidden">
+  <div class="modal-content">
+
+    <h2>Add Items to Purchase Order</h2>
+
+    <form id="itemForm">
+      <input type="hidden" id="po_id">
+
+      <label>Product</label>
+      <select id="productSelect"></select><br>
+
+      <label>Quantity</label>
+      <input id="qtyInput" type="number" placeholder="Quantity"><br>
+
+      <label>Cost Price</label>
+      <input id="costInput" type="number" step="0.01" placeholder="Cost Price"><br><br>
+
+      <button type="submit" class="primary-btn">Add Item</button>
+    </form>
+
+    <hr>
+
+    <h3>Items in this PO</h3>
+    <ul id="poItemsList"></ul>
+
   </div>
 </div>
 

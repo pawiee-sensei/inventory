@@ -48,13 +48,41 @@ async function loadPO(){
   body.innerHTML='';
 
   rows.forEach(r=>{
+
+    const statusBadge =
+      r.status === 'RECEIVED'
+        ? '<span class="status-badge status-ok">RECEIVED</span>'
+        : '<span class="status-badge status-low">PENDING</span>';
+
+    const actions =
+      r.status === 'RECEIVED'
+        ? `<button onclick="openItems(${r.id})" class="secondary-btn">View</button>`
+        : `
+            <button onclick="openItems(${r.id})" class="secondary-btn">Items</button>
+            <button onclick="receivePO(${r.id})" class="primary-btn">Receive</button>
+          `;
+
     body.insertAdjacentHTML('beforeend',`
       <tr>
         <td>#${r.id}</td>
-        <td>${r.supplier_name}</td>
-        <td>${r.status}</td>
-        <td>₱${Number(r.total_cost).toLocaleString()}</td>
+        <td>${r.supplier_name ?? '—'}</td>
+        <td>
+  ${
+    r.item_count > 0
+      ? `<span class="badge">${r.item_count}</span>`
+      : `<span class="muted">—</span>`
+  }
+</td>
+        <td>${statusBadge}</td>
+        <td class="num">
+  ${
+    r.total_cost > 0
+      ? `₱${Number(r.total_cost).toLocaleString()}`
+      : `<span class="muted">—</span>`
+  }
+</td>
         <td>${new Date(r.created_at).toLocaleDateString()}</td>
+        <td>${actions}</td>
       </tr>
     `);
   });
