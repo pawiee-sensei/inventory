@@ -176,6 +176,37 @@ body: `
   </div>
 </div>
 
+
+<!-- ================= Adjustment Modal ================= -->
+
+<div id="adjustModal" class="modal hidden">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Adjust Stock</h2>
+      <button id="closeAdjustModal" class="close-btn">&times;</button>
+    </div>
+
+    <form id="adjustForm" class="modal-form">
+      <input type="hidden" id="adj_product_id">
+
+      <label>Quantity (+ add / - deduct)</label>
+      <input id="adj_qty" type="number" required>
+
+      <label>Reason</label>
+      <select id="adj_reason">
+        <option>Damaged</option>
+        <option>Expired</option>
+        <option>Returned</option>
+        <option>Manual Correction</option>
+      </select>
+
+      <button type="submit" class="primary-btn">Apply Adjustment</button>
+    </form>
+
+  </div>
+</div>
+
 <!-- ================= PRODUCT TABLE ================= -->
 <div class="table-wrapper">
   <div class="table-container">

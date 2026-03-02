@@ -40,6 +40,7 @@ function renderProducts(products) {
         <td>${badge}</td>
         <td>
           <button class="edit-btn" data-product='${JSON.stringify(p)}'>Edit</button>
+          <button class="adjust-btn" data-product='${JSON.stringify(p)}'>Adjust</button>
           <button class="delete-btn" data-id="${p.id}">Delete</button>
         </td>
       </tr>
@@ -146,7 +147,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const addForm = document.getElementById('productForm');
   const editForm = document.getElementById('editForm');
+  const adjustForm = document.getElementById('adjustForm');
 
+adjustForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    product_id: document.getElementById('adj_product_id').value,
+    quantity: document.getElementById('adj_qty').value,
+    reason: document.getElementById('adj_reason').value
+  };
+
+  await fetch('/api/admin/stock/adjust', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  });
+
+  document.getElementById('adjustModal').classList.add('hidden');
+
+  await loadProducts();
+  await loadStockHistory();
+});
   loadProducts();
   loadStockHistory();
 
@@ -209,14 +231,21 @@ editForm.addEventListener('submit', async (e) => {
 });
 
   // TABLE BUTTON EVENTS
-  document.getElementById('productBody').addEventListener('click', async (e) => {
-    if (e.target.classList.contains('edit-btn')) {
-      openEditModal(JSON.parse(e.target.dataset.product));
-    }
-    if (e.target.classList.contains('delete-btn')) {
-      await deleteProduct(e.target.dataset.id);
-    }
-  });
+ document.getElementById('productBody').addEventListener('click', async (e) => {
+
+  if (e.target.classList.contains('edit-btn')) {
+    openEditModal(JSON.parse(e.target.dataset.product));
+  }
+
+  if (e.target.classList.contains('adjust-btn')) {
+    openAdjustModal(JSON.parse(e.target.dataset.product));
+  }
+
+  if (e.target.classList.contains('delete-btn')) {
+    await deleteProduct(e.target.dataset.id);
+  }
+
+});
 
   // CLOSE MODAL OUTSIDE CLICK
   ['productModal', 'editModal'].forEach(id => {
@@ -259,3 +288,11 @@ function historyBadge(type) {
   if (type === 'OUT') return '<span class="status-badge status-out">OUT</span>';
   return '<span class="status-badge status-low">ADJUST</span>';
 }
+
+// OPEN MODAL
+function openAdjustModal(product){
+  document.getElementById('adjustModal').classList.remove('hidden');
+  document.getElementById('adj_product_id').value = product.id;
+}
+
+

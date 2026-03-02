@@ -221,5 +221,13 @@
 }
 
 
-
+.adjust-btn {
+  background:#8b5cf6;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  margin-right:5px;
+  cursor: pointer;
+}
 

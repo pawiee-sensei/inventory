@@ -36,3 +36,32 @@ exports.getHistory = async () => {
 
   return rows;
 };
+
+exports.adjustStock = async ({product_id, quantity, reason}) => {
+  const conn = await db.getConnection();
+
+  try {
+    await conn.beginTransaction();
+
+    // update stock
+    await conn.query(`
+      UPDATE products 
+      SET current_stock = current_stock + ?
+      WHERE id = ?
+    `,[quantity, product_id]);
+
+    // log movement
+    await conn.query(`
+      INSERT INTO stock_movements 
+      (product_id, type, quantity, note)
+      VALUES (?, 'ADJUSTMENT', ?, ?)
+    `,[product_id, quantity, reason]);
+
+    await conn.commit();
+    conn.release();
+  } catch(err){
+    await conn.rollback();
+    conn.release();
+    throw err;
+  }
+};
