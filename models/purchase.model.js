@@ -44,7 +44,9 @@ exports.getAllPO = async () => {
       ON poi.purchase_order_id = po.id
 
     GROUP BY po.id
-    ORDER BY po.created_at DESC
+    ORDER BY 
+    po.status = 'RECEIVED', 
+    po.created_at DESC
   `);
 
   return rows;
@@ -114,4 +116,31 @@ exports.receivePO = async (po_id) => {
     conn.release();
     throw err;
   }
+};
+
+exports.getPODetails = async (id) => {
+  const [[po]] = await db.query(`
+    SELECT 
+      po.id,
+      po.status,
+      po.total_cost,
+      po.created_at,
+      s.name AS supplier_name
+    FROM purchase_orders po
+    LEFT JOIN suppliers s ON po.supplier_id = s.id
+    WHERE po.id = ?
+  `,[id]);
+
+  const [items] = await db.query(`
+    SELECT 
+      p.name,
+      poi.quantity,
+      poi.cost_price,
+      (poi.quantity * poi.cost_price) AS subtotal
+    FROM purchase_order_items poi
+    JOIN products p ON poi.product_id = p.id
+    WHERE poi.purchase_order_id = ?
+  `,[id]);
+
+  return { po, items };
 };

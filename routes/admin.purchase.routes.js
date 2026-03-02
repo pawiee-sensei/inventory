@@ -3,6 +3,7 @@ const router = express.Router();
 const adminAuth = require('../middleware/adminAuth');
 const controller = require('../controllers/admin.purchase.controller');
 
+router.get('/:id/details', adminAuth, controller.getPODetails);
 router.get('/suppliers', adminAuth, controller.getSuppliers);
 router.post('/suppliers', adminAuth, controller.createSupplier);
 

@@ -42,3 +42,8 @@ exports.receivePO = async (req,res)=>{
   await Purchase.receivePO(req.params.id);
   res.json({success:true});
 };
+
+exports.getPODetails = async (req,res)=>{
+  const data = await Purchase.getPODetails(req.params.id);
+  res.json(data);
+};

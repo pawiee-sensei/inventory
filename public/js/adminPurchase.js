@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== TABLE BUTTON EVENTS (CSP SAFE) =====
   document.getElementById('poBody').addEventListener('click', async (e) => {
 
-    // OPEN ITEMS MODAL
     if (e.target.classList.contains('items-btn')) {
       const id = e.target.dataset.id;
       openItems(id);
     }
 
-    // RECEIVE PURCHASE ORDER
     if (e.target.classList.contains('receive-btn')) {
       const id = e.target.dataset.id;
       receivePO(id);
@@ -115,6 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// ================= PO STATUS BADGE =================
+function getPOBadge(status){
+  if(status === 'PENDING'){
+    return '<span class="po-badge pending">PENDING</span>';
+  }
+  return '<span class="po-badge received">RECEIVED</span>';
+}
+
+
 // ================= RECEIVE PURCHASE ORDER =================
 async function receivePO(id){
   if(!confirm('Receive this order and add stock to inventory?')) return;
@@ -138,15 +145,13 @@ async function loadPO(){
 
   rows.forEach(r=>{
 
-    const statusBadge =
-      r.status === 'RECEIVED'
-        ? '<span class="status-badge status-ok">RECEIVED</span>'
-        : '<span class="status-badge status-low">PENDING</span>';
+    const statusBadge = getPOBadge(r.status);
 
     const actions =
       r.status === 'RECEIVED'
         ? `<button class="items-btn secondary-btn" data-id="${r.id}">View</button>`
         : `
+            
             <button class="items-btn secondary-btn" data-id="${r.id}">Items</button>
             <button class="receive-btn primary-btn" data-id="${r.id}">Receive</button>
           `;
@@ -189,11 +194,57 @@ async function loadSuppliers(){
 
 // ================= OPEN ITEMS MODAL =================
 async function openItems(poId){
+
   document.getElementById('itemsModal').classList.remove('hidden');
   document.getElementById('po_id').value = poId;
 
-  loadProductsForPO();
-  loadPOItems(poId);
+  const res = await fetch(`/api/admin/purchase/${poId}/details`);
+  const data = await res.json();
+
+  const po = data.po;
+  const items = data.items;
+
+  document.getElementById('poSupplier').textContent = po.supplier_name;
+  document.getElementById('poStatus').innerHTML = getPOBadge(po.status);
+  document.getElementById('poDate').textContent =
+    new Date(po.created_at).toLocaleDateString();
+
+  const form = document.getElementById('itemForm');
+  if(po.status === 'RECEIVED'){
+    form.style.display = 'none';
+  } else {
+    form.style.display = 'block';
+    loadProductsForPO();
+  }
+
+  const tbody = document.getElementById('poItemsList');
+  tbody.innerHTML = '';
+
+  items.forEach(i=>{
+    tbody.insertAdjacentHTML('beforeend',`
+      <tr>
+        <td>${i.name}</td>
+        <td>${i.quantity}</td>
+        <td>₱${Number(i.cost_price).toLocaleString()}</td>
+        <td>₱${Number(i.subtotal).toLocaleString()}</td>
+      </tr>
+    `);
+  });
+
+ const totalSection = document.getElementById('poTotalSection');
+
+// Always reset first
+totalSection.classList.add('hidden');
+
+const status = (po.status || '').toUpperCase().trim();
+
+// Show total ONLY when fully received
+if(status === 'RECEIVED'){
+  document.getElementById('poTotal').textContent =
+    Number(po.total_cost || 0).toLocaleString();
+
+  totalSection.classList.remove('hidden');
+}
 }
 
 
