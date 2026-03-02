@@ -11,6 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
     .addEventListener('click', () => {
       document.getElementById('poModal').classList.remove('hidden');
     });
+  // ===== CLOSE SUPPLIER MODAL (X BUTTON) =====
+  document.getElementById('closeSupplierModal').addEventListener('click', () => {
+    document.getElementById('supplierModal').classList.add('hidden');
+  });
+
+  // ===== CLOSE MODAL WHEN CLICK OUTSIDE =====
+  const supplierModal = document.getElementById('supplierModal');
+  supplierModal.addEventListener('click', (e) => {
+    if (e.target === supplierModal) {
+      supplierModal.classList.add('hidden');
+    }
+  });
+
+  // ===== CLOSE PO MODAL (X BUTTON) =====
+document.getElementById('closePOModal').addEventListener('click', () => {
+  document.getElementById('poModal').classList.add('hidden');
+});
+
+// ===== CLOSE PO MODAL WHEN CLICK OUTSIDE =====
+const poModal = document.getElementById('poModal');
+poModal.addEventListener('click', (e) => {
+  if (e.target === poModal) {
+    poModal.classList.add('hidden');
+  }
+});
 
   document.getElementById('supplierForm')
     .addEventListener('submit', async (e) => {

@@ -30,28 +30,45 @@ body: `
 </div>
 
 <!-- ================= SUPPLIER MODAL ================= -->
+<!-- ================= SUPPLIER MODAL ================= -->
 <div id="supplierModal" class="modal hidden">
   <div class="modal-content">
-    <h2>Create Supplier</h2>
+
+    <div class="modal-header">
+      <h2>Add Supplier</h2>
+      <button type="button" id="closeSupplierModal" class="close-btn">&times;</button>
+    </div>
+
     <form id="supplierForm">
-      <input name="name" placeholder="Supplier Name" required><br>
-      <input name="contact_person" placeholder="Contact Person"><br>
-      <input name="phone" placeholder="Phone"><br>
-      <input name="email" placeholder="Email"><br>
-      <textarea name="address" placeholder="Address"></textarea><br>
-      <button type="submit" class="primary-btn">Save</button>
+      <input name="name" placeholder="Supplier Name" required>
+      <input name="contact_person" placeholder="Contact Person">
+      <input name="phone" placeholder="Phone">
+      <input name="email" placeholder="Email">
+      <textarea name="address" placeholder="Address"></textarea>
+
+      <button type="submit" class="primary-btn">Save Supplier</button>
     </form>
+
   </div>
 </div>
 
 <!-- ================= CREATE PO MODAL ================= -->
+<!-- ================= CREATE PO MODAL ================= -->
 <div id="poModal" class="modal hidden">
   <div class="modal-content">
-    <h2>Create Purchase Order</h2>
+
+    <div class="modal-header">
+      <h2>Create Purchase Order</h2>
+      <button type="button" id="closePOModal" class="close-btn">&times;</button>
+    </div>
+
     <form id="poForm">
+      <label>Supplier</label>
       <select name="supplier_id" id="supplierSelect"></select>
+
       <button type="submit" class="primary-btn">Create PO</button>
     </form>
+
   </div>
 </div>
 

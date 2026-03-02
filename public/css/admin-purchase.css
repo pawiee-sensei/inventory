@@ -115,3 +115,23 @@
 /* hover */
 .primary-btn:hover { background:#1d4ed8; }
 .secondary-btn:hover { background:#4b5563; }
+
+/* ===== MODAL HEADER (same as products) ===== */
+.modal-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.close-btn {
+  background:none;
+  border:none;
+  font-size:22px;
+  cursor:pointer;
+  color:#6b7280;
+}
+
+.close-btn:hover {
+  color:#111;
+}
