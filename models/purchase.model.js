@@ -33,14 +33,20 @@ exports.getAllPO = async () => {
       po.status,
       po.total_cost,
       po.created_at,
-      s.name AS supplier_name
+      s.name AS supplier_name,
+
+      COUNT(poi.id) AS item_count,
+      COALESCE(SUM(poi.quantity),0) AS total_qty
+
     FROM purchase_orders po
     LEFT JOIN suppliers s ON po.supplier_id = s.id
+    LEFT JOIN purchase_order_items poi 
+      ON poi.purchase_order_id = po.id
+
+    GROUP BY po.id
     ORDER BY po.created_at DESC
   `);
 
-
-  
   return rows;
 };
 
@@ -64,4 +70,48 @@ exports.getProducts = async () => {
     'SELECT id,name FROM products ORDER BY name'
   );
   return rows;
+};
+
+exports.receivePO = async (po_id) => {
+  const conn = await db.getConnection();
+
+  try {
+    await conn.beginTransaction();
+
+    const [items] = await conn.query(`
+      SELECT * FROM purchase_order_items WHERE purchase_order_id = ?
+    `, [po_id]);
+
+    for (const item of items) {
+
+      // 1️⃣ Update product stock
+      await conn.query(`
+        UPDATE products 
+        SET current_stock = current_stock + ?
+        WHERE id = ?
+      `, [item.quantity, item.product_id]);
+
+      // 2️⃣ Insert stock movement
+      await conn.query(`
+        INSERT INTO stock_movements 
+        (product_id, type, quantity, note)
+        VALUES (?, 'IN', ?, 'PO Received')
+      `, [item.product_id, item.quantity]);
+    }
+
+    // 3️⃣ Update PO status
+    await conn.query(`
+      UPDATE purchase_orders 
+      SET status = 'RECEIVED'
+      WHERE id = ?
+    `, [po_id]);
+
+    await conn.commit();
+    conn.release();
+
+  } catch (err) {
+    await conn.rollback();
+    conn.release();
+    throw err;
+  }
 };

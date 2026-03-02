@@ -16,14 +16,15 @@ body: `
   <table id="poTable">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Supplier</th>
-        <th>Items</th>
-        <th>Status</th>
-        <th>Total Cost</th>
-        <th>Date</th>
-        <th>Actions</th>
-      </tr>
+      <th>ID</th>
+      <th>Supplier</th>
+      <th>Items</th>
+      <th>Qty</th>
+      <th>Status</th>
+      <th>Total Cost</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
     </thead>
     <tbody id="poBody"></tbody>
   </table>
@@ -72,31 +73,38 @@ body: `
   </div>
 </div>
 
-<!-- ================= ADD ITEMS MODAL ================= -->
+<!-- ================= PO ITEMS MODAL ================= -->
 <div id="itemsModal" class="modal hidden">
-  <div class="modal-content">
+  <div class="modal-content large">
 
-    <h2>Add Items to Purchase Order</h2>
+    <div class="modal-header">
+      <h2>Purchase Order Items</h2>
+      <button id="closeItemsModal" class="close-btn">&times;</button>
+    </div>
 
-    <form id="itemForm">
+    <form id="itemForm" class="po-form">
       <input type="hidden" id="po_id">
 
-      <label>Product</label>
-      <select id="productSelect"></select><br>
-
-      <label>Quantity</label>
-      <input id="qtyInput" type="number" placeholder="Quantity"><br>
-
-      <label>Cost Price</label>
-      <input id="costInput" type="number" step="0.01" placeholder="Cost Price"><br><br>
-
-      <button type="submit" class="primary-btn">Add Item</button>
+      <div class="form-row">
+        <select id="productSelect"></select>
+        <input id="qtyInput" type="number" placeholder="Qty">
+        <input id="costInput" type="number" step="0.01" placeholder="Cost">
+        <button type="submit" class="primary-btn">Add</button>
+      </div>
     </form>
 
-    <hr>
-
-    <h3>Items in this PO</h3>
-    <ul id="poItemsList"></ul>
+    <div class="po-items-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody id="poItemsList"></tbody>
+      </table>
+    </div>
 
   </div>
 </div>

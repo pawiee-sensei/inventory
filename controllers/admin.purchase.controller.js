@@ -37,3 +37,8 @@ exports.getPOItems = async (req,res)=>{
   const rows = await Purchase.getPOItems(req.params.id);
   res.json(rows);
 };
+
+exports.receivePO = async (req,res)=>{
+  await Purchase.receivePO(req.params.id);
+  res.json({success:true});
+};
