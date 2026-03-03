@@ -64,8 +64,8 @@ function renderProducts(products) {
         <td class="num">₱${Number(p.selling_price).toLocaleString()}</td>
         <td>${badge}</td>
         <td>
-          <button class="edit-btn" data-product='${JSON.stringify(p)}'>Edit</button>
-          <button class="adjust-btn" data-product='${JSON.stringify(p)}'>Adjust</button>
+          <button class="edit-btn" data-id="${p.id}">Edit</button>
+          <button class="adjust-btn" data-id="${p.id}">Adjust</button>
           <button class="delete-btn" data-id="${p.id}">Delete</button>
         </td>
       </tr>
@@ -335,20 +335,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // TABLE ACTIONS
   // ===============================
   document.getElementById('productBody')
-    .addEventListener('click', async (e)=>{
+  .addEventListener('click', async (e)=>{
 
-      if(e.target.classList.contains('edit-btn')){
-        openEditModal(JSON.parse(e.target.dataset.product));
-      }
+    const id = e.target.dataset.id;
+    if (!id) return;
 
-      if(e.target.classList.contains('adjust-btn')){
-        openAdjustModal(JSON.parse(e.target.dataset.product));
-      }
+    const product = ALL_PRODUCTS.find(p => p.id == id);
+    if (!product) return;
 
-      if(e.target.classList.contains('delete-btn')){
-        await deleteProduct(e.target.dataset.id);
-      }
-    });
+    if(e.target.classList.contains('edit-btn')){
+      openEditModal(product);
+    }
+
+    if(e.target.classList.contains('adjust-btn')){
+      openAdjustModal(product);
+    }
+
+    if(e.target.classList.contains('delete-btn')){
+      await deleteProduct(id);
+    }
+
+});
 
   // ===============================
   // ADD PRODUCT SUBMIT

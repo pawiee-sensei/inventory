@@ -46,13 +46,39 @@ exports.findById = async (id) => {
 };
 
 exports.update = async (id, data) => {
-  const { name, description, category, unit, cost_price, selling_price, min_stock_level, image } = data;
+  const {
+    name,
+    description,
+    category,
+    unit,
+    cost_price,
+    selling_price,
+    min_stock_level,
+    image
+  } = data;
 
   await db.query(
     `UPDATE products 
-     SET name=?, description=?, category=?, unit=?, cost_price=?, selling_price=?, min_stock_level=?, image=COALESCE(?, image)
+     SET name=?, 
+         description=?, 
+         category=?, 
+         unit=?, 
+         cost_price=?, 
+         selling_price=?, 
+         min_stock_level=?, 
+         image=? 
      WHERE id=?`,
-    [name, description, category, unit, cost_price, selling_price, min_stock_level, image, id]
+    [
+      name,
+      description,
+      category,
+      unit,
+      cost_price,
+      selling_price,
+      min_stock_level,
+      image,
+      id
+    ]
   );
 };
 

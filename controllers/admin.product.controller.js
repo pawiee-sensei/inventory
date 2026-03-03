@@ -14,7 +14,6 @@ exports.getAll = async (req, res) => {
 // CREATE PRODUCT (WITH IMAGE)
 exports.create = async (req, res) => {
   try {
-    // multer now guarantees req.body exists
     const body = req.body || {};
 
     const name = body.name;
@@ -27,13 +26,38 @@ exports.create = async (req, res) => {
     const current_stock = parseInt(body.current_stock) || 0;
     const image = req.file ? req.file.filename : null;
 
+    // ✅ BASIC VALIDATION (ADD HERE)
+
+    if (!name || !selling_price) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name and selling price are required'
+      });
+    }
+
+    if (isNaN(Number(selling_price))) {
+      return res.status(400).json({
+        success: false,
+        message: 'Selling price must be numeric'
+      });
+    }
+
+    // Optional but recommended:
+    if (Number(selling_price) < 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Selling price cannot be negative'
+      });
+    }
+
+    // ✅ CREATE AFTER VALIDATION
     await Product.create({
       name,
       description,
       category,
       unit,
       cost_price,
-      selling_price,
+      selling_price: Number(selling_price),
       min_stock_level,
       current_stock,
       image
@@ -47,14 +71,47 @@ exports.create = async (req, res) => {
   }
 };
 
+const fs = require('fs');
+const path = require('path');
+
 exports.update = async (req, res) => {
   try {
-    await Product.update(req.params.id, req.body, req.file);
+    const id = req.params.id;
+
+    const existingProduct = await Product.findById(id);
+
+    if (!existingProduct) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    let image = existingProduct.image;
+
+    // If new image uploaded
+    if (req.file) {
+
+      // Delete old image if exists
+      if (existingProduct.image) {
+        const oldPath = path.join(
+          __dirname,
+          '../../public/uploads',
+          existingProduct.image
+        );
+
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      image = req.file.filename;
+    }
+
+    await Product.update(id, { ...req.body, image });
 
     res.json({ success: true });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
