@@ -280,3 +280,39 @@
 .icon-btn:active {
   transform:scale(0.95);
 }
+
+/* ===== PAGINATION ===== */
+.pagination-container {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:25px 0 40px;
+}
+
+.page-btn,
+.page-number {
+  min-width:32px;
+  height:32px;
+  border:1px solid #ddd;
+  background:white;
+  border-radius:6px;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.page-number.active {
+  background:#2563eb;
+  color:white;
+  border-color:#2563eb;
+}
+
+.page-btn:hover:not(:disabled),
+.page-number:hover:not(.active) {
+  background:#f3f4f6;
+}
+
+.page-btn:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
