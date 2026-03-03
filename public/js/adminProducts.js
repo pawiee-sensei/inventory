@@ -54,8 +54,12 @@ function renderProducts(products) {
 // STATUS LOGIC
 // ===============================
 function getStatus(stock, min) {
-  if (stock === 0) return 'OUT';
-  if (stock <= min) return 'LOW';
+
+  const current = Number(stock) || 0;
+  const minimum = Number(min) || 0;
+
+  if (current === 0) return 'OUT';
+  if (current <= minimum) return 'LOW';
   return 'OK';
 }
 
@@ -87,14 +91,29 @@ function updateMetrics(products) {
 // ===============================
 // SEARCH + FILTER
 // ===============================
-function filterProducts() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
+function filterProducts(){
+
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const cat = document.getElementById('categoryFilter').value;
+  const status = document.getElementById('statusFilter').value;
+
+  console.log("Selected Status:", status);
 
   const filtered = ALL_PRODUCTS.filter(p => {
-    const matchName = p.name.toLowerCase().includes(q);
+
+    const productStatus = getStatus(p.current_stock, p.min_stock_level);
+
+    console.log("Product:", p.name);
+    console.log("Computed Status:", productStatus);
+    console.log("Stock:", p.current_stock);
+    console.log("Min:", p.min_stock_level);
+    console.log("---------------------");
+
+    const matchName = !q || p.name.toLowerCase().includes(q);
     const matchCat = !cat || p.category === cat;
-    return matchName && matchCat;
+    const matchStatus = !status || productStatus === status;
+
+    return matchName && matchCat && matchStatus;
   });
 
   renderProducts(filtered);
@@ -164,6 +183,8 @@ adjustForm.addEventListener('submit', async (e) => {
     body:JSON.stringify(data)
   });
 
+
+
   document.getElementById('adjustModal').classList.add('hidden');
 
   await loadProducts();
@@ -181,6 +202,27 @@ adjustForm.addEventListener('submit', async (e) => {
 
   document.getElementById('searchInput').addEventListener('input', filterProducts);
   document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+  document.getElementById('statusFilter').addEventListener('change', filterProducts);
+
+  document.getElementById('refreshTableBtn')
+  .addEventListener('click', async () => {
+    await loadProducts();
+    await loadStockHistory();
+  });
+
+  // CLOSE ADJUST MODAL (X BUTTON)
+  document.getElementById('closeAdjustModal')
+    .addEventListener('click', () => {
+      document.getElementById('adjustModal').classList.add('hidden');
+    });
+
+  // CLOSE WHEN CLICKING OUTSIDE
+  document.getElementById('adjustModal')
+    .addEventListener('click', (e) => {
+      if (e.target.id === 'adjustModal') {
+        e.target.classList.add('hidden');
+      }
+    });
 
   // ADD PRODUCT
   addForm.addEventListener('submit', async (e) => {

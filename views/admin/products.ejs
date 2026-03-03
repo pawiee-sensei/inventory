@@ -43,6 +43,16 @@ body: `
   </div>
 
   <div class="filter-box">
+  <label>Status:</label>
+  <select id="statusFilter" class="styled-select">
+  <option value="">All</option>
+  <option value="OK">Healthy</option>
+  <option value="LOW">Low Stock</option>
+  <option value="OUT">Out of Stock</option>
+</select>
+</div>
+
+  <div class="filter-box">
     <label>Category:</label>
     <select id="categoryFilter">
       <option value="">All</option>
@@ -52,6 +62,10 @@ body: `
       <option value="Supplies">Supplies</option>
     </select>
   </div>
+
+  <button id="refreshTableBtn" class="icon-btn" title="Refresh">
+  ⟳
+</button>
 
   <div class="table-count">
     Showing <strong id="tableCount">0</strong> products
@@ -177,29 +191,32 @@ body: `
 </div>
 
 
-<!-- ================= Adjustment Modal ================= -->
-
+<!-- ================= ADJUST STOCK MODAL ================= -->
 <div id="adjustModal" class="modal hidden">
   <div class="modal-content">
 
     <div class="modal-header">
       <h2>Adjust Stock</h2>
-      <button id="closeAdjustModal" class="close-btn">&times;</button>
+      <button type="button" id="closeAdjustModal" class="close-btn">&times;</button>
     </div>
 
     <form id="adjustForm" class="modal-form">
       <input type="hidden" id="adj_product_id">
 
-      <label>Quantity (+ add / - deduct)</label>
-      <input id="adj_qty" type="number" required>
+      <div class="form-group">
+        <label>Quantity (+ add / - deduct)</label>
+        <input id="adj_qty" type="number" required>
+      </div>
 
-      <label>Reason</label>
-      <select id="adj_reason">
-        <option>Damaged</option>
-        <option>Expired</option>
-        <option>Returned</option>
-        <option>Manual Correction</option>
-      </select>
+      <div class="form-group">
+        <label>Reason</label>
+        <select id="adj_reason">
+          <option value="Damaged">Damaged</option>
+          <option value="Expired">Expired</option>
+          <option value="Returned">Returned</option>
+          <option value="Manual Correction">Manual Correction</option>
+        </select>
+      </div>
 
       <button type="submit" class="primary-btn">Apply Adjustment</button>
     </form>

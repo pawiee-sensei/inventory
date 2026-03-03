@@ -221,6 +221,8 @@
 }
 
 
+
+
 .adjust-btn {
   background:#8b5cf6;
   color:white;
@@ -228,6 +230,53 @@
   padding:6px 10px;
   border-radius:6px;
   margin-right:5px;
-  cursor: pointer;
+  cursor:pointer;
+  transition:0.2s ease;
 }
 
+.adjust-btn:hover {
+  opacity:0.85;
+}
+
+/* ===== STYLED DROPDOWN ===== */
+.styled-select {
+  padding:8px 10px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  background:white;
+  font-size:14px;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.styled-select:focus {
+  outline:none;
+  border-color:#2563eb;
+  box-shadow:0 0 0 2px rgba(37,99,235,0.2);
+}
+
+.filter-box select {
+  padding:8px 10px;
+  border:1px solid #ddd;
+  border-radius:6px;
+}
+
+/* ===== ICON BUTTON ===== */
+.icon-btn {
+  background:white;
+  border:1px solid #ddd;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:16px;
+  transition:all .2s ease;
+}
+
+.icon-btn:hover {
+  background:#f3f4f6;
+  border-color:#bbb;
+}
+
+.icon-btn:active {
+  transform:scale(0.95);
+}
