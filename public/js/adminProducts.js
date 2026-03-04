@@ -169,7 +169,26 @@ function updateMetrics(products){
   if(elLow) elLow.textContent = low;
   if(elOut) elOut.textContent = out;
   if(elHealthy) elHealthy.textContent = healthy;
+
+  /* ===== LOW STOCK ALERT ===== */
+
+  const alert = document.getElementById('lowStockAlert');
+  const count = document.getElementById('lowStockCount');
+
+  if(alert && count){
+
+    count.textContent = low;
+
+    if(low > 0){
+      alert.classList.remove('hidden');
+    } else {
+      alert.classList.add('hidden');
+    }
+
+  }
+
 }
+
 // ===============================
 // FILTER
 // ===============================
@@ -347,6 +366,14 @@ document.addEventListener('DOMContentLoaded', () => {
       renderStockHistory();
     }
   });
+
+  document.getElementById('viewLowStock')
+  .addEventListener('click', () => {
+
+    document.getElementById('statusFilter').value = 'LOW';
+
+    filterProducts();
+});
 
   // ===============================
   // FILTERS
