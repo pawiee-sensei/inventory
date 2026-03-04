@@ -119,7 +119,9 @@ function updateTableCount(count){
 // ===============================
 function getStatus(stock, min){
   const current = Number(stock) || 0;
-  const minimum = Number(min) || 0;
+
+  // fallback if min_stock_level not returned from API
+  const minimum = Number(min) || 5;
 
   if(current === 0) return 'OUT';
   if(current <= minimum) return 'LOW';
@@ -132,6 +134,42 @@ function getStatusBadge(status){
   return '<span class="status-badge status-ok">OK</span>';
 }
 
+// ===============================
+// METRICS
+// ===============================
+function updateMetrics(products){
+
+  let total = products.length;
+  let low = 0;
+  let out = 0;
+  let healthy = 0;
+
+  products.forEach(p => {
+
+    const status = getStatus(p.current_stock, p.min_stock_level);
+
+    if(status === 'OUT'){
+      out++;
+    }
+    else if(status === 'LOW'){
+      low++;
+    }
+    else{
+      healthy++;
+    }
+
+  });
+
+  const elTotal = document.getElementById('m_total');
+  const elLow = document.getElementById('m_low');
+  const elOut = document.getElementById('m_out');
+  const elHealthy = document.getElementById('m_healthy');
+
+  if(elTotal) elTotal.textContent = total;
+  if(elLow) elLow.textContent = low;
+  if(elOut) elOut.textContent = out;
+  if(elHealthy) elHealthy.textContent = healthy;
+}
 // ===============================
 // FILTER
 // ===============================
@@ -201,11 +239,37 @@ function renderStockHistory(){
     tbody.insertAdjacentHTML('beforeend', tr);
   });
 
-  document.getElementById('historyPageInfo').textContent =
-    `Page ${HISTORY_PAGE} of ${totalPages}`;
+  renderHistoryPagination(totalPages);
 
   document.getElementById('historyPrev').disabled = HISTORY_PAGE === 1;
   document.getElementById('historyNext').disabled = HISTORY_PAGE === totalPages;
+}
+
+function renderHistoryPagination(totalPages){
+
+  const container = document.getElementById('historyPageNumbers');
+  if(!container) return;
+
+  container.innerHTML = '';
+
+  for(let i = 1; i <= totalPages; i++){
+
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    btn.classList.add('page-number');
+
+    if(i === HISTORY_PAGE){
+      btn.classList.add('active');
+    }
+
+    btn.addEventListener('click', ()=>{
+      HISTORY_PAGE = i;
+      renderStockHistory();
+    });
+
+    container.appendChild(btn);
+  }
+
 }
 
 function historyBadge(type){

@@ -9,17 +9,19 @@ body {
 /* Layout */
 .admin-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Sidebar (final refined layout) */
 .sidebar {
-  width: 190px;              /* reduced width */
+  width: 190px;
   background: #0f172a;
   color: #e5e7eb;
   padding: 28px 18px;
   display: flex;
   flex-direction: column;
+
+  min-height: 100vh;
 }
 
 /* Logo */

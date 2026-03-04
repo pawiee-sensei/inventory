@@ -316,3 +316,15 @@
   opacity:.4;
   cursor:not-allowed;
 }
+
+.page-numbers {
+  display:flex;
+  gap:6px;
+}
+
+.page-number {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+}
