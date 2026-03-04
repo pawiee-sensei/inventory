@@ -3,11 +3,12 @@ title: 'Purchase Orders',
 body: `
 
 <link rel="stylesheet" href="/css/admin-purchase.css">
+<link rel="stylesheet" href="/css/admin-supplier.css">
 
 <div class="page-header">
   <h1>Purchase Orders</h1>
   <div>
-    <button id="openSupplierModal" class="secondary-btn">Supplier</button>
+    
     <button id="openPOModal" class="primary-btn">Create PO</button>
   </div>
 </div>
@@ -131,6 +132,98 @@ body: `
 
   </div>
 </div>
+
+<!-- ================= SUPPLIERS SECTION ================= -->
+
+<link rel="stylesheet" href="/css/admin-supplier.css">
+
+<div class="supplier-section">
+
+  <div class="supplier-header">
+    <h2>Suppliers</h2>
+    <button id="openAddSupplierModal" class="primary-btn">
+      + Add Supplier
+    </button>
+  </div>
+
+  <div class="table-wrapper">
+    <div class="table-container">
+
+      <table id="supplierTable">
+
+        <thead>
+          <tr>
+            <th>Supplier Name</th>
+            <th>Contact Person</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Total Purchase Orders</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="supplierBody"></tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================= ADD / EDIT SUPPLIER MODAL ================= -->
+
+<div id="supplierManageModal" class="modal hidden">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2 id="supplierModalTitle">Add Supplier</h2>
+      <button id="closeSupplierModal" class="close-btn">&times;</button>
+    </div>
+
+    <form id="supplierManageForm" class="modal-form">
+
+      <input type="hidden" id="supplier_id">
+
+      <div class="form-group">
+        <label>Supplier Name</label>
+        <input id="supplier_name" required>
+      </div>
+
+      <div class="form-group">
+        <label>Contact Person</label>
+        <input id="supplier_contact">
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input id="supplier_phone">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input id="supplier_email">
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <textarea id="supplier_address"></textarea>
+      </div>
+
+      <button type="submit" class="primary-btn">
+        Save Supplier
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script src="/js/adminSupplier.js"></script>
 
 <script src="/js/adminPurchase.js"></script>
 

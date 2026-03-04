@@ -17,11 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   });
 
-  // OPEN MODALS
-  document.getElementById('openSupplierModal')
-    .addEventListener('click', () => {
-      document.getElementById('supplierModal').classList.remove('hidden');
-    });
+ 
 
   document.getElementById('openPOModal')
     .addEventListener('click', () => {

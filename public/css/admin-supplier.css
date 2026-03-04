@@ -1,0 +1,44 @@
+/* ===== SUPPLIER SECTION ===== */
+
+.supplier-section {
+  margin-top:40px;
+}
+
+.supplier-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+#supplierTable th,
+#supplierTable td {
+  padding:12px;
+  border-bottom:1px solid #eee;
+}
+
+#supplierTable tr:hover {
+  background:#f9fafb;
+}
+
+
+/* ===== SUPPLIER BUTTONS ===== */
+
+.edit-supplier-btn {
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  margin-right:5px;
+  cursor:pointer;
+}
+
+.delete-supplier-btn {
+  background:#ef4444;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}

@@ -1,9 +1,22 @@
 const db = require('../db');
 
 exports.getAll = async () => {
-  const [rows] = await db.query(
-    'SELECT * FROM suppliers ORDER BY created_at DESC'
-  );
+  const [rows] = await db.query(`
+    SELECT 
+      s.id,
+      s.name,
+      s.contact_person,
+      s.phone,
+      s.email,
+      s.address,
+      COUNT(po.id) AS total_po
+    FROM suppliers s
+    LEFT JOIN purchase_orders po 
+      ON po.supplier_id = s.id
+    GROUP BY s.id
+    ORDER BY s.created_at DESC
+  `);
+
   return rows;
 };
 
