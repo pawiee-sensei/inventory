@@ -7,6 +7,8 @@ let HISTORY_ROWS = [];
 let HISTORY_PAGE = 1;
 const HISTORY_PER_PAGE = 5;
 
+
+
 // ===============================
 // LOAD PRODUCTS
 // ===============================

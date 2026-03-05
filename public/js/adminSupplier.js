@@ -1,3 +1,7 @@
+let SUP_ALL = [];
+let SUP_PAGE = 1;
+const SUP_LIMIT = 8;
+
 document.addEventListener("DOMContentLoaded", () => {
 
   loadSupplierTable();
@@ -22,12 +26,30 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadSupplierTable() {
 
   const res = await fetch("/api/admin/purchase/suppliers");
-  const suppliers = await res.json();
+
+  SUP_ALL = await res.json();
+
+  SUP_PAGE = 1;
+
+  renderSuppliers();
+
+}
+
+
+/* ================= RENDER SUPPLIERS ================= */
+
+function renderSuppliers(){
+
+  const start = (SUP_PAGE - 1) * SUP_LIMIT;
+  const end = start + SUP_LIMIT;
+
+  const rows = SUP_ALL.slice(start, end);
 
   const body = document.getElementById("supplierBody");
+
   body.innerHTML = "";
 
-  suppliers.forEach(s => {
+  rows.forEach(s => {
 
     const row = `
       <tr>
@@ -55,7 +77,77 @@ async function loadSupplierTable() {
 
   });
 
+  renderSupplierPagination();
+
 }
+
+
+/* ================= SUPPLIER PAGINATION ================= */
+
+function renderSupplierPagination(){
+
+  const totalPages = Math.ceil(SUP_ALL.length / SUP_LIMIT);
+
+  const container = document.getElementById("supplierPageNumbers");
+
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  for(let i = 1; i <= totalPages; i++){
+
+    const active = i === SUP_PAGE ? "active-page" : "";
+
+    container.insertAdjacentHTML("beforeend", `
+      <button class="page-btn ${active}" data-sup-page="${i}">
+        ${i}
+      </button>
+    `);
+
+  }
+
+}
+
+
+/* ================= PAGINATION EVENTS ================= */
+
+document.addEventListener("click",(e)=>{
+
+  if(e.target.dataset.supPage){
+
+    SUP_PAGE = Number(e.target.dataset.supPage);
+
+    renderSuppliers();
+
+  }
+
+  if(e.target.id === "supplierPrev"){
+
+    if(SUP_PAGE > 1){
+
+      SUP_PAGE--;
+
+      renderSuppliers();
+
+    }
+
+  }
+
+  if(e.target.id === "supplierNext"){
+
+    const max = Math.ceil(SUP_ALL.length / SUP_LIMIT);
+
+    if(SUP_PAGE < max){
+
+      SUP_PAGE++;
+
+      renderSuppliers();
+
+    }
+
+  }
+
+});
 
 
 /* ================= ADD SUPPLIER ================= */
@@ -106,13 +198,12 @@ async function submitSupplier(e) {
     body: JSON.stringify(data)
   });
 
-closeSupplierModal();
+  closeSupplierModal();
 
-await loadSupplierTable();
+  await loadSupplierTable();
 
-if (typeof loadSuppliers === "function") {
-  loadSuppliers();   // refresh PO dropdown
-}
+  if (typeof loadSuppliers === "function") {
+    loadSuppliers();   // refresh PO dropdown
+  }
 
-console.log(suppliers);
 }
