@@ -32,3 +32,21 @@ exports.create = async (data) => {
 
   return result.insertId;
 };
+
+exports.update = async (id,data)=>{
+
+  const {name,contact_person,phone,email,address} = data;
+
+  await db.query(`
+    UPDATE suppliers
+    SET
+      name=?,
+      contact_person=?,
+      phone=?,
+      email=?,
+      address=?
+    WHERE id=?
+  `,
+  [name,contact_person,phone,email,address,id]);
+
+};

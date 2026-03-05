@@ -47,3 +47,11 @@ exports.getPODetails = async (req,res)=>{
   const data = await Purchase.getPODetails(req.params.id);
   res.json(data);
 };
+
+exports.updateSupplier = async (req,res)=>{
+
+  await Supplier.update(req.params.id, req.body);
+
+  res.json({success:true});
+
+};

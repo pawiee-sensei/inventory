@@ -113,6 +113,17 @@ function renderSupplierPagination(){
 
 document.addEventListener("click",(e)=>{
 
+  /* ===== EDIT SUPPLIER BUTTON ===== */
+
+  if(e.target.classList.contains("edit-supplier-btn")){
+
+    const supplier = JSON.parse(e.target.dataset.supplier);
+
+    openEditSupplier(supplier);
+
+  }
+
+
   if(e.target.dataset.supPage){
 
     SUP_PAGE = Number(e.target.dataset.supPage);
@@ -149,7 +160,6 @@ document.addEventListener("click",(e)=>{
 
 });
 
-
 /* ================= ADD SUPPLIER ================= */
 
 function openAddSupplier() {
@@ -159,6 +169,24 @@ function openAddSupplier() {
   document.getElementById("supplierManageForm").reset();
 
   document.getElementById("supplier_id").value = "";
+
+  document
+    .getElementById("supplierManageModal")
+    .classList.remove("hidden");
+
+}
+
+function openEditSupplier(s){
+
+  document.getElementById("supplierModalTitle").textContent = "Edit Supplier";
+
+  document.getElementById("supplier_id").value = s.id;
+
+  document.getElementById("supplier_name").value = s.name || "";
+  document.getElementById("supplier_contact").value = s.contact_person || "";
+  document.getElementById("supplier_phone").value = s.phone || "";
+  document.getElementById("supplier_email").value = s.email || "";
+  document.getElementById("supplier_address").value = s.address || "";
 
   document
     .getElementById("supplierManageModal")
@@ -182,6 +210,8 @@ async function submitSupplier(e) {
 
   e.preventDefault();
 
+  const supplierId = document.getElementById("supplier_id").value;
+
   const data = {
     name: document.getElementById("supplier_name").value,
     contact_person: document.getElementById("supplier_contact").value,
@@ -190,11 +220,17 @@ async function submitSupplier(e) {
     address: document.getElementById("supplier_address").value
   };
 
-  await fetch("/api/admin/purchase/suppliers", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+  let url = "/api/admin/purchase/suppliers";
+  let method = "POST";
+
+  if(supplierId){
+    url = `/api/admin/purchase/suppliers/${supplierId}`;
+    method = "PUT";
+  }
+
+  await fetch(url,{
+    method: method,
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 
