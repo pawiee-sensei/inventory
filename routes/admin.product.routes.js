@@ -18,6 +18,6 @@ router.post(
 
 router.post('/:id/update', adminAuth, upload.single('image'), controller.update);
 router.post('/:id/delete', adminAuth, controller.delete);
-
+router.delete('/:id', adminAuth, controller.deleteProduct);
 
 module.exports = router;

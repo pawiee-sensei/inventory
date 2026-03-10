@@ -1,9 +1,22 @@
 const db = require('../db');
 
 exports.generateSKU = async () => {
-  const [rows] = await db.query('SELECT COUNT(*) as count FROM products');
-  const next = rows[0].count + 1;
-  return 'SKU-' + String(next).padStart(5, '0');
+  const [rows] = await db.query(`
+    SELECT sku 
+    FROM products 
+    ORDER BY id DESC 
+    LIMIT 1
+  `);
+
+  let nextNumber = 1;
+
+  if (rows.length > 0) {
+    const lastSku = rows[0].sku;           // e.g. SKU-00006
+    const number = parseInt(lastSku.split('-')[1]);
+    nextNumber = number + 1;
+  }
+
+  return 'SKU-' + String(nextNumber).padStart(5, '0');
 };
 
 
@@ -96,4 +109,11 @@ exports.delete = async (id) => {
   }
 
   await db.query(`DELETE FROM products WHERE id=?`, [id]);
+};
+
+exports.delete = async (id)=>{
+  await db.query(
+    "DELETE FROM products WHERE id=?",
+    [id]
+  );
 };

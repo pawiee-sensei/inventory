@@ -127,3 +127,12 @@ exports.delete = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
+exports.deleteProduct = async (req,res)=>{
+
+  await Product.delete(req.params.id);
+
+  res.json({ success:true });
+
+};

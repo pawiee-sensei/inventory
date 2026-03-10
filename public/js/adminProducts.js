@@ -215,9 +215,27 @@ function filterProducts(){
 // DELETE
 // ===============================
 async function deleteProduct(id){
+
   if(!confirm('Delete this product?')) return;
-  await fetch(`/api/admin/products/${id}/delete`, { method:'POST' });
-  await loadProducts();
+
+  try{
+
+    const res = await fetch(`/api/admin/products/${id}`, {
+      method: 'DELETE'
+    });
+
+    if(!res.ok){
+      alert('Delete failed');
+      return;
+    }
+
+    await loadProducts();
+
+  }catch(err){
+    console.error(err);
+    alert('Server error');
+  }
+
 }
 
 // ===============================

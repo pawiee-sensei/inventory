@@ -1,6 +1,6 @@
 let SUP_ALL = [];
 let SUP_PAGE = 1;
-const SUP_LIMIT = 8;
+const SUP_LIMIT = 5;
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -123,6 +123,17 @@ document.addEventListener("click",(e)=>{
 
   }
 
+    /* ===== DELETE SUPPLIER BUTTON ===== */
+
+  if(e.target.classList.contains("delete-supplier-btn")){
+
+    const id = e.target.dataset.id;
+
+    if(!confirm("Delete this supplier?")) return;
+
+    deleteSupplier(id);
+
+  }
 
   if(e.target.dataset.supPage){
 
@@ -240,6 +251,36 @@ async function submitSupplier(e) {
 
   if (typeof loadSuppliers === "function") {
     loadSuppliers();   // refresh PO dropdown
+  }
+
+}
+
+/* ================= DELETE SUPPLIER ================= */
+
+async function deleteSupplier(id){
+
+  try{
+
+    const res = await fetch(`/api/admin/purchase/suppliers/${id}`,{
+      method:"DELETE"
+    });
+
+    const data = await res.json();
+
+    if(!data.success){
+      alert("Delete failed");
+      return;
+    }
+
+    await loadSupplierTable();
+
+    if(typeof loadSuppliers === "function"){
+      loadSuppliers(); // refresh PO dropdown
+    }
+
+  }catch(err){
+    console.error(err);
+    alert("Server error");
   }
 
 }

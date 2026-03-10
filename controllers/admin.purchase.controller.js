@@ -55,3 +55,11 @@ exports.updateSupplier = async (req,res)=>{
   res.json({success:true});
 
 };
+
+exports.deleteSupplier = async (req,res)=>{
+
+  await Supplier.delete(req.params.id);
+
+  res.json({success:true});
+
+};

@@ -50,3 +50,10 @@ exports.update = async (id,data)=>{
   [name,contact_person,phone,email,address,id]);
 
 };
+
+exports.delete = async (id)=>{
+  await db.query(
+    "DELETE FROM suppliers WHERE id=?",
+    [id]
+  );
+};

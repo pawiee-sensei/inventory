@@ -14,6 +14,6 @@ router.get('/', adminAuth, controller.getAllPO);
 router.get('/products', adminAuth, controller.getProducts);
 router.get('/:id/items', adminAuth, controller.getPOItems);
 router.put('/suppliers/:id', adminAuth, controller.updateSupplier);
-
+router.delete('/suppliers/:id', adminAuth, controller.deleteSupplier);
 
 module.exports = router;
